@@ -1,12 +1,11 @@
 <%- include('partials/header') %>
 <main>
     <h1><%= title%></h1>
-    <p>Here are our Service Project Categories:</p>
+    <p>Here are Categories and their associated Projects:</p>
     <ul>
-        <li>Environmental</li>
-        <li>Educational</li>
-        <li>Community Service</li>
-        <li>Health and Wellness</li>
+        <% categories.forEach(category => { %>
+            <li><strong><%= category.category %></strong></li>
+        <% }); %>
     </ul>
 </main>
 <%- include('partials/footer')%>

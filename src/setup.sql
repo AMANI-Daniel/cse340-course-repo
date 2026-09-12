@@ -108,3 +108,94 @@ VALUES
 (3, 'Community Health Outreach',
  'Supporting community health education and outreach activities.',
  'Rubavu, Rwanda', '2027-03-15');
+
+
+ -- Creating a table categories
+
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    category_name VARCHAR(100) NOT NULL
+);
+
+-- Creating a linking table for the project and categories
+
+CREATE TABLE project_category (
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+
+    PRIMARY KEY (project_id, category_id),
+
+    FOREIGN KEY (project_id)
+        REFERENCES projects(project_id),
+
+    FOREIGN KEY (category_id)
+        REFERENCES categories(category_id)
+);
+
+-- Inserting data in categories table
+
+INSERT INTO categories (category_name)
+VALUES
+('Environmental'),
+('Educational'),
+('Community Service'),
+('Health and Wellness');
+
+
+SELECT * FROM categories;
+
+
+INSERT INTO project_category (project_id, category_id)
+VALUES
+-- BrightFuture Builders
+(1, 1), -- Community Housing Project → Environmental
+(1, 3), -- Community Housing Project → Community Service
+(2, 2), -- Green School Construction → Educational
+(2, 1), -- Green School Construction → Environmental
+(3, 3), -- Rural Bridge Project → Community Service
+(3, 1), -- Rural Bridge Project → Environmental
+(4, 1), -- Clean Water Facilities → Environmental
+(4, 3), -- Clean Water Facilities → Community Service
+(5, 1), -- Community Road Improvement → Environmental
+(5, 3), -- Community Road Improvement → Community Service
+(6, 2), -- Youth Construction Training → Educational
+(6, 3), -- Youth Construction Training → Community Service
+
+-- GreenHarvest Growers
+(7, 1), -- Urban Vegetable Gardens → Environmental
+(7, 3), -- Urban Vegetable Gardens → Community Service
+(8, 2), -- School Farming Program → Educational
+(8, 1), -- School Farming Program → Environmental
+(9, 1), -- Community Composting Project → Environmental
+(9, 3), -- Community Composting Project → Community Service
+(10, 1), -- Rooftop Farming Initiative → Environmental
+(10, 3), -- Rooftop Farming Initiative → Community Service
+(11, 2), -- Farmers Training Program → Educational
+(11, 1), -- Farmers Training Program → Environmental
+(12, 3), -- Community Food Market → Community Service
+(12, 1), -- Community Food Market → Environmental
+
+-- UnityServe Volunteers
+(13, 1), -- Community Clean-Up → Environmental
+(13, 3), -- Community Clean-Up → Community Service
+(14, 3), -- Food Donation Drive → Community Service
+(14, 4), -- Food Donation Drive → Health and Wellness
+(15, 3), -- Elderly Support Program → Community Service
+(15, 4), -- Elderly Support Program → Health and Wellness
+(16, 2), -- School Supplies Campaign → Educational
+(16, 3), -- School Supplies Campaign → Community Service
+(17, 2), -- Youth Mentorship Program → Educational
+(17, 3), -- Youth Mentorship Program → Community Service
+(18, 4), -- Community Health Outreach → Health and Wellness
+(18, 3); -- Community Health Outreach → Community Service
+
+
+SELECT
+    p.title  AS project_title,
+    c.category_name AS category
+FROM project_category pc
+JOIN projects p
+    ON pc.project_id = p.project_id
+JOIN categories c
+    ON pc.category_id = c.category_id
+ORDER BY p.project_id;
