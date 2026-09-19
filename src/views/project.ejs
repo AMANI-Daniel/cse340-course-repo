@@ -6,10 +6,10 @@
         <h2>
             <%= projectDetails.title %>
         </h2>
-        <p>Description: <%= projectDetails.description %></p>
-        <p>Project Date: <%= projectDetails.date %></p>
-        <p>Project Location: <%= projectDetails.location %></p>
-        <p>Organization: <a href="/organization/<%= projectDetails.organization_id %>">
+        <p><strong>Description:</strong> <%= projectDetails.description %></p>
+        <p><strong>Project Date:</strong> <%= projectDetails.date %></p>
+        <p><strong>Project Location:</strong> <%= projectDetails.location %></p>
+        <p><strong>Organization:</strong> <a href="/organization/<%= projectDetails.organization_id %>">
                 <%= projectDetails.name %>
             </a></p>
     </main>
