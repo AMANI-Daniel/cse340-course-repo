@@ -4,7 +4,9 @@
     <p>Here are Categories and their associated Projects:</p>
     <ul>
         <% categories.forEach(category => { %>
-            <li><strong><%= category.category %></strong></li>
+            <li><a href="/category/<%= category.category_id %>">
+                    <%= category.category %>
+                </a></li>
         <% }); %>
     </ul>
 </main>
