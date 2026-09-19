@@ -13,11 +13,11 @@ const showOrganizationDetailsPage = async (req, res) => {
     const organizationId = req.params.id;
     const organizationDetails = await getOrganizationDetails(organizationId);
 
-    console.log('Organization details: ', organizationDetails);
+    // console.log('Organization details: ', organizationDetails);
 
     const projects = await getProjectsByOrganizationId(organizationId);
 
-    console.log('Project details:', projects );
+    // console.log('Project details:', projects );
     const title = 'Organization Details';
 
     //console.log('Organization Details:', organizationDetails);
