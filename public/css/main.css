@@ -161,6 +161,104 @@ main {
     }
 }
 
+main form {
+    width: min(100%, 760px);
+    margin-top: 1.75rem;
+}
+
+.form-group {
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    color: var(--navy);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.form-group input:not([type="checkbox"]),
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    min-height: 2.9rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid #b8cbd1;
+    border-radius: 6px;
+    background: #fbfdfd;
+    color: var(--ink);
+    font: inherit;
+    transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.form-group textarea {
+    min-height: 8rem;
+    resize: vertical;
+}
+
+.form-group input:not([type="checkbox"]):hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: var(--teal);
+}
+
+.form-group input:not([type="checkbox"]):focus-visible,
+.form-group select:focus-visible,
+.form-group textarea:focus-visible {
+    outline: none;
+    border-color: var(--teal);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(8, 127, 140, 0.16);
+}
+
+.form-group:has(input[type="checkbox"])>div {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.9rem;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #fbfdfd;
+}
+
+.form-group input[type="checkbox"] {
+    flex: 0 0 auto;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: 0;
+    accent-color: var(--teal-dark);
+}
+
+.form-group input[type="checkbox"]+label {
+    margin: 0;
+    cursor: pointer;
+}
+
+main form button[type="submit"] {
+    min-height: 2.9rem;
+    padding: 0.7rem 1.25rem;
+    border: 0;
+    border-radius: 6px;
+    background: var(--teal-dark);
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+main form button[type="submit"]:hover {
+    background: var(--navy);
+    transform: translateY(-1px);
+}
+
+main form button[type="submit"]:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(8, 127, 140, 0.25);
+}
+
 .main-logo {
     display: block;
     width: min(100%, 520px);

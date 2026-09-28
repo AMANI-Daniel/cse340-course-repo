@@ -89,6 +89,7 @@ const getProjectDetails = async (projectId) => {
         p.title,
         p.description,
         TO_CHAR(p.date, 'Month DD, YYYY') AS date,
+        TO_CHAR(p.date, 'YYYY-MM-DD') AS date_input,
         p.location,
         p.organization_id,
         o.name
@@ -121,4 +122,28 @@ const createProject = async (title, description, location, date, organizationId)
 
     return result.rows[0].project_id;
 }
-export { getAllProjects, getProjectsByOrganizationId, getProjectsByCategoryId, getUpcomingProjects, getProjectDetails, createProject };
+
+const updateProject = async (projectId, organizationId, title, description, location, date) => {
+
+    const query = `UPDATE projects
+    SET organization_id = $1, title = $2, description = $3, location = $4, date = $5
+    WHERE project_id = $6
+    RETURNING project_id`;
+    
+    const queryParams = [organizationId, title, description, location, date, projectId];
+    const results = await db.query(query, queryParams);
+
+    if (results.rows.length === 0) {
+        throw new Error('Failed to update the project!');
+        
+    }
+    if (process.env.ENABLE_SQL_LOGGING === 'true') {
+        console.log('Updated prpject with Id:', projectId);
+    }
+
+    return results.rows[0].project_id;
+    
+} 
+
+
+export { getAllProjects, getProjectsByOrganizationId, getProjectsByCategoryId, getUpcomingProjects, getProjectDetails, createProject, updateProject };
