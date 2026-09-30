@@ -27,9 +27,15 @@ import {
     showCategoriesPage,
     showCategoryDetailsPage,
     showAssignCategoriesForm,
-    processAssignCategoriesForm
+    processAssignCategoriesForm,
+    showNewCategoryForm,
+    categoryValidation,
+    processNewCategoryForm,
+    showEditCategoryForm,
+    processEditCategoryForm
 } from './controllers/categories.js';
 import { testErrorPage } from './controllers/errors.js';
+
 
 
 
@@ -78,5 +84,12 @@ router.post('/assign-categories/:projectId', processAssignCategoriesForm);
 router.get('/edit-project/:projectId', showEditProjectForm);
 router.post('/edit-project/:projectId', projectValidation, processEditProjectForm)
 
+// Route to display category form
+router.get('/new-category', showNewCategoryForm);
+router.post('/new-category', categoryValidation, processNewCategoryForm);
+
+//Routes to handle updating category
+router.get('/edit-category/:id', showEditCategoryForm);
+router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
 
 export default router;
