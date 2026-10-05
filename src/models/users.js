@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';    
 import db from './db.js'
 
 const createUser = async (name, email, passwordHash) => {
@@ -22,4 +23,38 @@ const createUser = async (name, email, passwordHash) => {
     return result.rows[0].user_id;
 };
 
-export { createUser };
+const findUserByEmail = async (email) => {
+    const query = `
+        SELECT user_id, name, email, password_hash, role_id 
+        FROM users 
+        WHERE email = $1
+    `;
+    const queryParams = [email];
+
+    const result = await db.query(query, queryParams);
+
+    if (result.rows.length === 0) {
+        return null; // User not found
+    }
+
+    return result.rows[0];
+};
+
+const verifyPassword = async (password, passwordHash) => {
+    return await bcrypt.compare(password, passwordHash);
+};
+
+const authenticateUser = async (email, password) => {
+    const user = await findUserByEmail(email);
+
+    if (!user) return null; // User not found
+    
+
+    const isMatch = await verifyPassword(password, user.password_hash);
+    if (!isMatch) return null; // Password does not match
+    
+    delete user.password_hash; // Remove password hash before returning user object
+    return user;
+};
+
+export { createUser, authenticateUser };
