@@ -45,7 +45,9 @@ import {
     requireLogin,
     showDashboard,
     requireRole,
-    showUsersPage
+    showUsersPage,
+    makeVolunteerForProject,
+    unVolunteerFromProject
 } from './controllers/users.js';
 
 
@@ -116,6 +118,8 @@ router.get('/logout', processLogout);
 router.get('/dashboard', requireLogin, showDashboard);
 
 // Protected users route
-router.get('/users',requireRole('admin'), showUsersPage);
+router.get('/users', requireRole('admin'), showUsersPage);
 
+router.get('/volunteer/:projectId', requireLogin, makeVolunteerForProject);
+router.get('/unvolunteer/:projectId', requireLogin, unVolunteerFromProject);
 export default router;

@@ -2,8 +2,11 @@ import bcrypt from 'bcrypt';
 import {
     createUser,
     authenticateUser,
-    getAllUsers
+    getAllUsers,
+    addVolunteerToProject,
+    removeVolunteerFromProject,
 } from '../models/users.js';
+import { getProjectsByVolunteerId } from '../models/projects.js';
 
 const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register' });
@@ -81,11 +84,13 @@ const requireLogin = (req, res, next) => {
 // showing a dashboard page
 const showDashboard = async (req, res) => {
     const user = req.session.user;
+    const projects = await getProjectsByVolunteerId(user.user_id);
 
     res.render('dashboard', {
         title: 'Dashboard',
         name: user.name,
-        email: user.email
+        email: user.email,
+        projects: projects
     });
 }
 
@@ -116,13 +121,47 @@ const requireRole = (role) => {
     };
 };
 
-const showUsersPage = async (req, res) => { 
+const showUsersPage = async (req, res) => {
     const users = await getAllUsers();
 
     // console.log('Users:', users);
 
-    const title = 'Users';  
+    const title = 'Users';
     res.render('users', { title, users });
-}
+};
 
-export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole, showUsersPage };
+
+const makeVolunteerForProject = async (req, res) => {
+    try {
+        const projectId = req.params.projectId;
+        const userId = req.session.user.user_id;
+        
+        await addVolunteerToProject(userId, projectId);
+        req.flash('success', 'You have successfully volunteered for the project!');
+       res.redirect(`/project/${projectId}`);
+    } catch (error) {
+        console.error('Error making volunteer for project:', error);
+        req.flash('error', 'An error occurred while trying to volunteer for the project. Please try again.');
+        res.redirect(`/project/${req.params.projectId}`);
+    }
+};
+
+const unVolunteerFromProject = async (req, res) => {
+    try {
+        const projectId = req.params.projectId;
+        const userId = req.session.user.user_id;
+        
+        const unvolunteered = await removeVolunteerFromProject(userId, projectId);
+        if (unvolunteered) {
+            req.session.user.hasVolunteered = false;
+        }
+        req.flash('success', 'You have successfully unvolunteered from the project!');
+        res.redirect(`/project/${projectId}`);
+    } catch (error) {
+        console.error('Error unvolunteering from project:', error);
+        req.flash('error', 'An error occurred while trying to unvolunteer from the project. Please try again.');
+        res.redirect(`/project/${req.params.projectId}`);
+    }
+};
+
+export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole, showUsersPage, makeVolunteerForProject, unVolunteerFromProject };

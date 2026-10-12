@@ -71,4 +71,43 @@ const getAllUsers = async () => {
     return results.rows;
 }
 
-export { createUser, authenticateUser, getAllUsers };
+
+const addVolunteerToProject = async (userId, projectId) => {
+    const query = `
+        INSERT INTO user_project (user_id, project_id)
+        VALUES ($1, $2)
+        RETURNING *;
+    `;
+    const queryParams = [userId, projectId];
+
+    await db.query(query, queryParams);
+};
+const hasUserVolunteered = async (userId, projectId) => {
+
+    const query = `
+        SELECT 1
+        FROM user_project
+         WHERE user_id = $1
+           AND project_id = $2
+         LIMIT 1`;
+    
+    const queryParams = [userId, projectId];
+
+    const result = await db.query(query, queryParams);
+
+    return result.rowCount > 0;
+};
+
+const removeVolunteerFromProject = async (userId, projectId) => {
+    const query = `
+        DELETE FROM user_project
+        WHERE user_id = $1 AND project_id = $2
+        RETURNING *;
+    `;
+    const queryParams = [userId, projectId];
+
+    const results = await db.query(query, queryParams);
+    return results.rows[0];
+};
+
+export { createUser, authenticateUser, getAllUsers, addVolunteerToProject, removeVolunteerFromProject, hasUserVolunteered };

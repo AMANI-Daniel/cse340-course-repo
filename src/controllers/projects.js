@@ -6,6 +6,7 @@ import {
     createProject,
     updateProject
 } from '../models/projects.js';
+import { hasUserVolunteered } from '../models/users.js'; // Import the function to check if a user has volunteered for a project
 import { getCategoriesByProjectID } from '../models/categories.js'; // Import the function to get category details by project ID
 
 import { getAllOrganizations } from '../models/organizations.js';
@@ -50,11 +51,12 @@ const showProjectDetailsPage = async (req, res) => {
     const projectDetails = await getProjectDetails(projectId);
     const categoryDetails = await getCategoriesByProjectID(projectId); // Fetch category details for the project
 
-    console.log('Category Details:', categoryDetails); // Log the category details for debugging
+    const hasVolunteered = req.session.user ? await hasUserVolunteered(req.session.user.user_id, projectId) : false;
+    // console.log('Category Details:', categoryDetails);
     // console.log('Project Details:', projectDetails); 
     const title = 'Project Details';
 
-    res.render('project', { title, projectDetails, categoryDetails });
+    res.render('project', { title, projectDetails, categoryDetails, hasVolunteered });
 };
 
 

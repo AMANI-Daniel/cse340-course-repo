@@ -145,5 +145,20 @@ const updateProject = async (projectId, organizationId, title, description, loca
     
 } 
 
+const getProjectsByVolunteerId = async (userId) => {
+    const query = `
+        SELECT p.project_id, p.title, p.description, p.location, p.date,
+               p.organization_id, o.name AS organization_name
+        FROM user_project up
+        JOIN projects p ON p.project_id = up.project_id
+        JOIN organization o ON o.organization_id = p.organization_id
+        WHERE up.user_id = $1
+        ORDER BY p.date;
+    `;
 
-export { getAllProjects, getProjectsByOrganizationId, getProjectsByCategoryId, getUpcomingProjects, getProjectDetails, createProject, updateProject };
+    const result = await db.query(query, [userId]);
+    return result.rows;
+};
+
+
+export { getAllProjects, getProjectsByOrganizationId, getProjectsByCategoryId, getUpcomingProjects, getProjectDetails, createProject, updateProject, getProjectsByVolunteerId };

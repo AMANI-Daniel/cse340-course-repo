@@ -223,3 +223,15 @@ CREATE TABLE users (
     role_id INTEGER REFERENCES roles(role_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+--Creating a linking table for users and projects
+CREATE TABLE user_project (
+	user_id INTEGER NOT NULL,
+	project_id INTEGER NOT NULL,
+
+	PRIMARY KEY (user_id, project_id),
+
+	FOREIGN KEY (user_id) REFERENCES users(user_id),
+	FOREIGN KEY (project_id) REFERENCES projects(project_id)
+
+);
