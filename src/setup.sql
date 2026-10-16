@@ -224,7 +224,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
---Creating a linking table for users and projects
+--Creating user_project table to track which users have volunteered for which projects
 CREATE TABLE user_project (
 	user_id INTEGER NOT NULL,
 	project_id INTEGER NOT NULL,

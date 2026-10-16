@@ -3,8 +3,8 @@ import {
     createUser,
     authenticateUser,
     getAllUsers,
-    addVolunteerToProject,
-    removeVolunteerFromProject,
+    addUserVolunteerToProject,
+    removeUserVolunteerFromProject,
 } from '../models/users.js';
 import { getProjectsByVolunteerId } from '../models/projects.js';
 
@@ -131,12 +131,12 @@ const showUsersPage = async (req, res) => {
 };
 
 
-const makeVolunteerForProject = async (req, res) => {
+const makeUserVolunteerForProject = async (req, res) => {
     try {
         const projectId = req.params.projectId;
         const userId = req.session.user.user_id;
         
-        await addVolunteerToProject(userId, projectId);
+        await addUserVolunteerToProject(userId, projectId);
         req.flash('success', 'You have successfully volunteered for the project!');
        res.redirect(`/project/${projectId}`);
     } catch (error) {
@@ -146,12 +146,12 @@ const makeVolunteerForProject = async (req, res) => {
     }
 };
 
-const unVolunteerFromProject = async (req, res) => {
+const makeUserUnvolunteerFromProject = async (req, res) => {
     try {
         const projectId = req.params.projectId;
         const userId = req.session.user.user_id;
         
-        const unvolunteered = await removeVolunteerFromProject(userId, projectId);
+        const unvolunteered = await removeUserVolunteerFromProject(userId, projectId);
         if (unvolunteered) {
             req.session.user.hasVolunteered = false;
         }
@@ -164,4 +164,4 @@ const unVolunteerFromProject = async (req, res) => {
     }
 };
 
-export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole, showUsersPage, makeVolunteerForProject, unVolunteerFromProject };
+export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole, showUsersPage, makeUserVolunteerForProject, makeUserUnvolunteerFromProject };

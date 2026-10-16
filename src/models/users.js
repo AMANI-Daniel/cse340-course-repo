@@ -72,7 +72,7 @@ const getAllUsers = async () => {
 }
 
 
-const addVolunteerToProject = async (userId, projectId) => {
+const addUserVolunteerToProject = async (userId, projectId) => {
     const query = `
         INSERT INTO user_project (user_id, project_id)
         VALUES ($1, $2)
@@ -98,7 +98,7 @@ const hasUserVolunteered = async (userId, projectId) => {
     return result.rowCount > 0;
 };
 
-const removeVolunteerFromProject = async (userId, projectId) => {
+const removeUserVolunteerFromProject = async (userId, projectId) => {
     const query = `
         DELETE FROM user_project
         WHERE user_id = $1 AND project_id = $2
@@ -110,4 +110,4 @@ const removeVolunteerFromProject = async (userId, projectId) => {
     return results.rows[0];
 };
 
-export { createUser, authenticateUser, getAllUsers, addVolunteerToProject, removeVolunteerFromProject, hasUserVolunteered };
+export { createUser, authenticateUser, getAllUsers, addUserVolunteerToProject, removeUserVolunteerFromProject, hasUserVolunteered };
